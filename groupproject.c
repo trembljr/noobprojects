@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 
 int main(){
 	//Declaring variables for user input
@@ -17,18 +16,17 @@ int main(){
 	int totalCorrect = 0;
 	int numScores;
 	int scoreAvg;
-
+	int luckyNum = 0;
 
 	int score = 0;
 
 	//Makes sure the number for the random generation is valid
-	long int *luckyNum = 0;
 	while(luckyNum < 1 || luckyNum > 9) {
 		printf("Please enter a number between 1 and 9.");
-		scanf(" %li", &luckyNum);
+		scanf(" %d", &luckyNum);
 	}
 	
-	srand(time(*luckyNum));
+	srand(luckyNum * 10);
 	int quizNum = rand() % 3 + 1;
 
 while(newQuiz = 'Y'){
