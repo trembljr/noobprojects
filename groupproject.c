@@ -2,7 +2,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
+#include <ctype.h>
+
+/*
+TEAM PERCENTAGES
+----------------------------------------------------
+Jordan Amberg - n% - wrote quiz1(programmed and wrote questions) and various bug fixes
+----------------------------------------------------
+Sami Bensellam - n%
+----------------------------------------------------
+Cole Eichacker - n%
+----------------------------------------------------
+Joseph Trembley - n%
+----------------------------------------------------
+Samuel Kidane - n%
+*/
 
 int main(){
 	//Declaring variables for user input
@@ -10,165 +24,165 @@ int main(){
 	char userMultChoice;
 	char userBlank[50];
 	char newQuiz = 'Y';
-	
-	//Declaring variables for test answers
-	char testMultChoice;
-	char testBlank[50];
-	int totalCorrect = 0;
-	int numScores;
-	int scoreAvg;
 
-
-	int score = 0;
-
-	//Makes sure the number for the random generation is valid
-	long int *luckyNum = 0;
-	while(luckyNum < 1 || luckyNum > 9) {
-		printf("Please enter a number between 1 and 9.");
-		scanf(" %li", &luckyNum);
-	}
-	
-	srand(time(*luckyNum));
-	int quizNum = rand() % 3 + 1;
-
-while(newQuiz = 'Y'){
-if (quizNum == 1){
-while(totalCorrect != 3){
-	
-		printf("True or false: This is an infinite loop\nwhile(1){\n   printf(\"1\");\n}\n");
-		printf("A. True\nB. False\n"); //correct answer: A
-		scanf(" %c", &userTrueFalse);
-		if(userTrueFalse == 'a' || userTrueFalse == 'A'){
-			printf("correct answer\n");
-			totalCorrect += 1;
-		}
-		else{
-			printf("wrong answer\n");
-		}
-		printf("What size array will the compiler create for the following string?:\n   char str[] = “midterm”\n");
-		printf("A. 6\nB. 7\nC. 30\nD. does not compile\n");
-		scanf(" %c", &userMultChoice);
-		if(userMultChoice == 'B' || 'b'){
-			printf("correct answer\n");
-			totalCorrect += 1;
-		}
-		else 
-			printf("wrong answer\n");
-		printf("Fill in the blank: what will the following code output on the final iteration?\nfor(int i = 1; i <= 10; i += 2){\n   printf(“%d“, i+1);\n}\n");
-		scanf(" %s", &userBlank);
-		if (strcmp(userBlank, "10") == 0){
-			printf("correct answer\n");
-			totalCorrect += 1;
-		}
-		else 
-			printf("wrong answer\n");
-		if(totalCorrect == 3)
-			printf("congratulations! You passed!\n");
-		else
-			printf("you failed, retake the quiz\n");
-	}
-}
-
-
-	   if(quizNum == 2){
-	   while(score != 3){
+    while(toupper(newQuiz) == 'Y'){
+        //Declares and reassigns variables used each loop
+        double score = 0;
+    	double scoreAvg = 0;
+    	double numScores = 0;
+    	newQuiz = 'A';
+        //Makes sure the number for the random generation is valid
+    	int luckyNum = 0;
+    	while(luckyNum < 1 || luckyNum > 9) {
+    		printf("Please enter a number between 1 and 9.\n");
+    		scanf(" %d", &luckyNum);
+    	}
+    	
+    	srand(luckyNum * 67);
+    	int quizNum = (rand() % 3) + 1;
+    	printf("You are taking quiz number %d.\n", quizNum);
         
-	//question 1 of quiz 2
-		printf("True or False: Only character or integer can be used in switch statement?\n");
-		printf("A: True\n B:False\n");
-		scanf(" %c" , &userTrueFalse);
-		if(userTrueFalse == 'A' || 'a'){
-		printf("correct answer\n");
-		score++;
-		}
-        		else{
-			printf("wrong answer\n");
-		}
+        if (quizNum == 1){
+            while(score != 15){
+			score = 0;
+    		printf("True or false: This is an infinite loop\nwhile(1){\n   printf(\"1\");\n}\n");
+    		printf("A. True\nB. False\n"); //correct answer: A
+    		scanf(" %c", &userTrueFalse);
+    		if(toupper(userTrueFalse) == 'A'){
+    			printf("correct answer\n");
+    			score += 5;
+    		}
+    		else{
+    			printf("wrong answer\n");
+    		}
+    		printf("What size array will the compiler create for the following string?:\n   char str[] = “midterm”\n");
+    		printf("A. 6\nB. 7\nC. 30\nD. does not compile\n");
+    		scanf(" %c", &userMultChoice);
+    		if(toupper(userMultChoice) == 'B'){
+    			printf("correct answer\n");
+    			score += 5;
+    		}
+    		else 
+    			printf("wrong answer\n");
+    		printf("Fill in the blank: what will the following code output on the final iteration?\nfor(int i = 1; i <= 10; i += 2){\n   printf(“%%d“, i+1);\n}\n");
+    		scanf(" %s", &userBlank);
+    		if (strcmp(userBlank, "10") == 0){
+    			printf("correct answer\n");
+    			score += 5;
+    		}
+    		else 
+    			printf("wrong answer\n");
+    		if(score == 15)
+    			printf("congratulations! You passed! Your score was 15!\n");
+    		else
+    			printf("you failed, retake the quiz. Your score was %lf out of 15\n",score);
+    	
+            scoreAvg += score;
+    	    numScores++;    
+        }
+    }
+    
+    	if(quizNum == 2){
+    	   while(score != 15){
+            score = 0;
+        	//question 1 of quiz 2
+    		printf("True or False: Only character or integer can be used in switch statement?\n");
+    		printf("A:True\nB:False\n");
+    		scanf(" %c" , &userTrueFalse);
+    		if(toupper(userTrueFalse) == 'A'){
+    		    printf("correct answer\n");
+    		    score += 5;
+    		}else{
+    			printf("wrong answer\n");
+    		}
+    		//question 2 of quiz 2
+    		printf("To print a double value which format specifier can be used?\n");
+    		printf("A: %%l \nB:%%lf \nC:%%d \nD: none of the above\n");
+    		scanf(" %c" , &userMultChoice);
+    	    if(toupper(userMultChoice) == 'B'){
+    	        printf("correct answer\n");
+    	        score += 5; 
+    	    }else {
+    		    printf("wrong answer\n");
+            }
+        	// question 3 of quiz 2
+        	printf("what number do you replace the ? with to assign y to the first index of array myQ[]?\nint myQ[5];\nint x = myQ[?];\n");
+        	scanf("%s", userBlank);
+        	if(strcmp(userBlank, "0") == 0){
+        		printf("correct\n");
+        	    score += 5; 
+            }else{
+        	    printf("wrong, you answered %s\n", userBlank);
+            }
+        	
+        	if(score == 15){
+        		printf("congratulations! quiz passed! You got 15 out of 15!\n");
+        			
+        	   }
+        	else{
+        		printf("quiz not passed, retake. Your score was %lf out of 15\n",score);
+        	}
+        	scoreAvg += score;
+    	    numScores++;
+        }
+    }
 
-		//question 2 of quiz 2
-		printf("To print a double value which format specifier can be used?\n");
-		printf("A: %%l \n B:%%lf \n C:%%d \n D: none of the above\n");
-		scanf(" %c" , &userMultChoice);
-	if(userMultChoice == 'B' || userMultChoice == 'b'){
-	printf("correct answer\n");
-	score++; 
-	}
-	else {
-		printf("wrong answer\n");
-}
-	// question 3 of quiz 2
-	printf("fill in the blank:  Compiler generates ___ file.(answer in lower case)\n");
-	scanf(" %s", &userBlank);
-	if(strcmp(userBlank, "object code") == 0){
-		printf("correct\n");
-	score++; 
-}
-	else{ 
-	printf("wrong\n");
-}
-}
-	   }
-	   //start of quiz 3
-	if(quizNum == 3){
-	while(score != 3){
-score = 0;
-	
-char testMultChoice = 'C';
-char testBlank[] = "before";
+    	if(quizNum == 3){
+    	while(score != 15){
+            score = 0;
 
-//Question 1 of Test 3
-printf("True or False: <stdio.h> lets you do math functions (ex: pow)\n");
-printf("A. True\nB. False\n");
-scanf(" %c", &userTrueFalse);
-if(userTrueFalse == 'B') {
-	printf("Correct\n");
-	score++;
-}else{
-	printf("Incorrect\n");
-}
+            //Question 1 of Test 3
+            printf("True or False: <stdio.h> lets you do math functions (ex: pow)\n");
+            printf("A. True\nB. False\n");
+            scanf(" %c", &userTrueFalse);
+            if(toupper(userTrueFalse) == 'B') {
+    	        printf("Correct\n");
+    	        score+= 5;
+            }else{
+    	        printf("Incorrect\n");
+            }
+    
+            //Question 2 of Test 3
+            printf("What variable type does not require an & in the scanf function?\n");
+            printf("A. int\nB. double\nC. string\nD.char\n");
+            scanf(" %c", &userMultChoice);
+            if(toupper(userMultChoice) == 'C') {
+            	printf("Correct\n");
+            	score+= 5;
+            }else{
+            	printf("Incorrect\n");
+            }
+    
+            //Question 3 of Test 3
+            printf("Prototypes are declared _____ the main function.(answer in lowercase)\n");
+            scanf(" %s", userBlank);
+            if(strcmp(userBlank, "before") == 0) {
+            	printf("Correct\n");
+            	score+= 5;
+            }else{
+            	printf("Incorrect\n");
+            }
+            	if(score == 15){
+            		printf("congratulations! quiz passed! You got 15 out of 15 on the quiz!\n");
+            			
+            	   }
+            	else{
+            		printf("quiz not passed,retake. Your score was %lf out of 15\n",score);
+            	}
+            scoreAvg += score;
+    	    numScores++;
+            }
+    	}
 
-//Question 2 of Test 3
-printf("What variable type does not require an & in the scanf function?\n");
-printf("A. int\nB. double\nC. string\nD.char\n");
-scanf(" %c", &userMultChoice);
-if(userMultChoice == testMultChoice) {
-	printf("Correct\n");
-	score++;
-}else{
-	printf("Incorrect\n");
+    	scoreAvg = scoreAvg / numScores;
+    	printf("Your average score on this quiz was %lf.\n", scoreAvg);
+		newQuiz = 'A';
+		while(toupper(newQuiz) != 'Y'){
+    		printf("Would you like to try a new quiz?\n");
+    		scanf(" %c", &newQuiz);
+    		if(toupper(newQuiz) == 'N'){
+    		    break;
+    		}
+        }
+    }
 }
-
-//Question 3 of Test 3
-printf("Prototypes are declared _____ the main function.(answer in lowercase)\n");
-scanf(" %s", userBlank);
-if(strcmp(userBlank, testBlank) == 0) {
-	printf("Correct\n");
-	score++;
-}else{
-	printf("Incorrect\n");
-}
-	if(score == 3){
-		printf("congratulations! quiz passed!\n");
-			
-	   }
-	else{
-		printf("quiz not passed,retake.\n");
-	}
-
-}
-	}
-	scoreAvg += score;
-	numScores++;
-	scoreAvg = scoreAvg / numScores;
-	printf("Your average score on this quiz was %lf.\n", scoreAvg);
-	while(newQuiz != 'Y' || newQuiz != 'N') {
-		printf("Would you like to try a new quiz?\n");
-		scanf(" %c", &newQuiz);
-}
-}
-}
-
-
-	   
-		
-		
