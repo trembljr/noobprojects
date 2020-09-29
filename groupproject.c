@@ -4,19 +4,22 @@
 #include <string.h>
 #include <ctype.h>
 
+
 /*
 TEAM PERCENTAGES
 ----------------------------------------------------
-Jordan Amberg - n% - wrote quiz1(programmed and wrote questions) and various bug fixes
+Jordan Amberg - 20% - wrote quiz1(programmed and wrote questions) and various bug fixes
 ----------------------------------------------------
-Sami Bensellam - n%
+Sami Bensellam - 20% - wrote questions, created some code, minor edits, bug fixes
 ----------------------------------------------------
-Cole Eichacker - n%
+Cole Eichacker - 20% - wrote questions, verified code, fixed bugs and finished code segments
 ----------------------------------------------------
-Joseph Trembley - n%
+Joseph Trembley - 20% - programmed quiz 3, testing
 ----------------------------------------------------
-Samuel Kidane - n%
+Samuel Kidane - 20%
 */
+
+
 
 int main(){
 	//Declaring variables for user input
@@ -24,7 +27,6 @@ int main(){
 	char userMultChoice;
 	char userBlank[50];
 	char newQuiz = 'Y';
-
     while(toupper(newQuiz) == 'Y'){
         //Declares and reassigns variables used each loop
         double score = 0;
@@ -49,33 +51,33 @@ int main(){
     		printf("A. True\nB. False\n"); //correct answer: A
     		scanf(" %c", &userTrueFalse);
     		if(toupper(userTrueFalse) == 'A'){
-    			printf("correct answer\n");
+    			printf("Correct Answer\n");
     			score += 5;
     		}
     		else{
-    			printf("wrong answer\n");
+    			printf("Wrong Answer\n");
     		}
     		printf("What size array will the compiler create for the following string?:\n   char str[] = “midterm”\n");
     		printf("A. 6\nB. 7\nC. 30\nD. does not compile\n");
     		scanf(" %c", &userMultChoice);
     		if(toupper(userMultChoice) == 'B'){
-    			printf("correct answer\n");
+    			printf("Correct Answer\n");
     			score += 5;
     		}
     		else 
-    			printf("wrong answer\n");
+    			printf("Wrong Answer\n");
     		printf("Fill in the blank: what will the following code output on the final iteration?\nfor(int i = 1; i <= 10; i += 2){\n   printf(“%%d“, i+1);\n}\n");
     		scanf(" %s", &userBlank);
     		if (strcmp(userBlank, "10") == 0){
-    			printf("correct answer\n");
+    			printf("Correct Answer\n");
     			score += 5;
     		}
     		else 
-    			printf("wrong answer\n");
+    			printf("Wrong Answer\n");
     		if(score == 15)
-    			printf("congratulations! You passed! Your score was 15!\n");
+    			printf("Congratulations! You passed! Your score was 15!\n");
     		else
-    			printf("you failed, retake the quiz. Your score was %lf out of 15\n",score);
+    			printf("You failed, retake the quiz. Your score was %lf out of 15\n",score);
     	
             scoreAvg += score;
     	    numScores++;    
@@ -90,56 +92,54 @@ int main(){
     		printf("A:True\nB:False\n");
     		scanf(" %c" , &userTrueFalse);
     		if(toupper(userTrueFalse) == 'A'){
-    		    printf("correct answer\n");
+    		    printf("Correct Answer\n");
     		    score += 5;
     		}else{
-    			printf("wrong answer\n");
+    			printf("Wrong Answer\n");
     		}
     		//question 2 of quiz 2
     		printf("To print a double value which format specifier can be used?\n");
     		printf("A: %%l \nB:%%lf \nC:%%d \nD: none of the above\n");
     		scanf(" %c" , &userMultChoice);
     	    if(toupper(userMultChoice) == 'B'){
-    	        printf("correct answer\n");
+    	        printf("Correct Answer\n");
     	        score += 5; 
     	    }else {
-    		    printf("wrong answer\n");
+    		    printf("Wrong Answer\n");
             }
         	// question 3 of quiz 2
-        	printf("what number do you replace the ? with to assign y to the first index of array myQ[]?\nint myQ[5];\nint x = myQ[?];\n");
+        	printf("What number do you replace the ? with to assign y to the first index of array myQ[]?\nint myQ[5];\nint x = myQ[?];\n");
         	scanf("%s", userBlank);
         	if(strcmp(userBlank, "0") == 0){
-        		printf("correct\n");
+        		printf("Correct Answer\n");
         	    score += 5; 
             }else{
-        	    printf("wrong, you answered %s\n", userBlank);
+        	    printf("Wrong, you answered %s\n", userBlank);
             }
         	
         	if(score == 15){
-        		printf("congratulations! quiz passed! You got 15 out of 15!\n");
+        		printf("Congratulations! Quiz passed! You got 15 out of 15!\n");
         			
         	   }
         	else{
-        		printf("quiz not passed, retake. Your score was %lf out of 15\n",score);
+        		printf("Quiz not passed, please retake. Your score was %lf out of 15\n",score);
         	}
         	scoreAvg += score;
     	    numScores++;
         }
     }
-
     	if(quizNum == 3){
     	while(score != 15){
             score = 0;
-
             //Question 1 of Test 3
             printf("True or False: <stdio.h> lets you do math functions (ex: pow)\n");
             printf("A. True\nB. False\n");
             scanf(" %c", &userTrueFalse);
             if(toupper(userTrueFalse) == 'B') {
-    	        printf("Correct\n");
+    	        printf("Correct Answer\n");
     	        score+= 5;
             }else{
-    	        printf("Incorrect\n");
+    	        printf("Incorrect Answer\n");
             }
     
             //Question 2 of Test 3
@@ -147,33 +147,32 @@ int main(){
             printf("A. int\nB. double\nC. string\nD.char\n");
             scanf(" %c", &userMultChoice);
             if(toupper(userMultChoice) == 'C') {
-            	printf("Correct\n");
+            	printf("Correct Answer\n");
             	score+= 5;
             }else{
-            	printf("Incorrect\n");
+            	printf("Incorrec Answert\n");
             }
     
             //Question 3 of Test 3
             printf("Prototypes are declared _____ the main function.(answer in lowercase)\n");
             scanf(" %s", userBlank);
             if(strcmp(userBlank, "before") == 0) {
-            	printf("Correct\n");
+            	printf("Correct Answer\n");
             	score+= 5;
             }else{
-            	printf("Incorrect\n");
+            	printf("Incorrect Answer\n");
             }
             	if(score == 15){
-            		printf("congratulations! quiz passed! You got 15 out of 15 on the quiz!\n");
+            		printf("Congratulations! Quiz passed! You got 15 out of 15 on the quiz!\n");
             			
             	   }
             	else{
-            		printf("quiz not passed,retake. Your score was %lf out of 15\n",score);
+            		printf("Quiz not passed, please retake. Your score was %lf out of 15\n",score);
             	}
             scoreAvg += score;
     	    numScores++;
             }
     	}
-
     	scoreAvg = scoreAvg / numScores;
     	printf("Your average score on this quiz was %lf.\n", scoreAvg);
 		newQuiz = 'A';
