@@ -58,7 +58,7 @@ int main(){
     			printf("Wrong Answer\n");
     		}
     		printf("What size array will the compiler create for the following string?:\n   char str[] = “midterm”\n");
-    		printf("A. 6\nB. 7\nC. 30\nD. does not compile\n");
+    		printf("A. 7\nB. 8\nC. 30\nD. does not compile\n");
     		scanf(" %c", &userMultChoice);
     		if(toupper(userMultChoice) == 'B'){
     			printf("Correct Answer\n");
