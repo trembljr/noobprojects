@@ -1,0 +1,98 @@
+/*----------------------------------------------------------------------------
+-		                    SE 185: Lab 06 - Bop-It!	    	             -
+-	Name:		Jordan Amberg															 -
+- 	Section:	4															 -
+-	NetID:		322683413														     -
+-	Date:		10/06/2020															 -
+-----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------
+-								Includes									 -
+-----------------------------------------------------------------------------*/
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/time.h>
+#include <stdbool.h>
+#include <time.h>
+#include <unistd.h> 
+/*----------------------------------------------------------------------------
+-	                            Prototypes                                   -
+-----------------------------------------------------------------------------*/
+int TimeInMs();
+bool CharsAreEqual(char userChar, char machineChar);
+
+/*----------------------------------------------------------------------------
+-	                            Notes                                        -
+-----------------------------------------------------------------------------*/
+// Compile with gcc lab06.c -o lab06
+// Run with ./ds4rd.exe -d 054c:05c4 -D DS4_BT -t -b | ./lab06
+
+/*----------------------------------------------------------------------------
+-								Implementation								 -
+-----------------------------------------------------------------------------*/
+int main(int argc, char *argv[])
+{
+    int userTime, userScore;
+	char userChar, bopChar; //Variable Declarations
+	srand(time(NULL)); /* This will ensure a random game each time. */
+	bopChar = (rand() % 58 + 65); // assigns random starting value to bopChar
+	
+	printf("Press any key to start playing BOP IT\n");
+	scanf(" %c",&userChar);
+	
+	for(int i = 2500; i > 0; i -= 100){
+		printf("Press the '%c' key, you have %d milliseconds\n",bopChar, i);
+		userTime = TimeInMs(&userChar);
+		printf("%d %c", userTime, userChar);
+		if(CharsAreEqual(*userChar,bopChar) && (TimeInMs() < i)){
+			srand((time(NULL)+(i*67)));
+			bopChar = (rand() % 94 + 32);
+			userScore++;
+			continue;
+		}
+		else if(!CharsAreEqual(*userChar,bopChar) && (TimeInMs() < i )){
+			printf("Wrong character\n");
+			i = -1;
+		}
+		else if(CharsAreEqual(*userChar,bopChar) && (TimeInMs() > i)){
+			printf("Took too long\n");
+			i = -1;
+		}
+		else{
+			printf("Took too long and wrong character\n");
+			i = -1;
+		}
+	}
+		printf("Your score was %d",userScore);
+	
+    return 0;
+}
+
+/* Put your functions here, and be sure to put prototypes above. */
+
+int TimeInMs(char *userChar){
+	int start, end, total;
+	struct timeval current;
+	char hold;
+	gettimeofday(&current, NULL);
+	long s = current.tv_sec;
+	long u = current.tv_usec;
+	long ms = ((s * 1000) + (u/1000));
+	start = ms;
+	scanf(" %c",&hold);
+	*userChar = hold;
+	gettimeofday(&current, NULL);
+	s = current.tv_sec;
+	u = current.tv_usec;
+	ms = ((s * 1000) + (u/1000));
+	end = ms;
+	total = end - start;
+	return total;
+}
+
+bool CharsAreEqual (char userChar, char machineChar){
+	if(userChar == machineChar)
+		return true;
+	else
+		return false;
+}
