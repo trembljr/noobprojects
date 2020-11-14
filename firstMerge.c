@@ -6,30 +6,28 @@
 void PrintBoard(char board[30][80]);
 void UpdateBoard(char words[],char board[30][80]);
 void MoveWords(char board[30][80]);
-void generateWord(FILE *fileName, char* randomWords);
+void generateWord(FILE *fileName, char* randomWords, int *w);
 
 int main(){
 	char playOrAdd;
 	char userAddWord[10];
 	char board[30][80];
 	char userWants;
-	int wordLeft;
 	char tempWordVar[50];
+	int d = 0;
 	for(int w = 0; w < 30; w++){
 		for(int i = 0; i < 80; i++){
 			board[w][i] = ' ';
 		}
 	}
-	FILE *fp = fopen("wordList.txt", "r+");
+	FILE *fp;
 	printf("Hello, this is a typing game. You will need to type the words as they" 
-	"appear.\nWould you like to play or add a word?\nYou currently have %d words that can" 
-    "be used. (Type ‘p’ for play or ‘a’ to add words)", wordLeft);
+	"appear.\nWould you like to play or add a word?\n(Type ‘p’ for play or ‘a’ to add words)");
     scanf(" %c", &playOrAdd);
     srand(time(NULL));
 	printf("Enter p to play or anything else to exit\n");
 	scanf(" %c", &userWants);
 	while(playOrAdd == 'a'){
-		fclose(fp);
         FILE *fp = fopen("wordList.txt", "a+");
         printf("Type a word that you want to add(one word, no spaces)\n");
 		scanf(" %s",userAddWord);
@@ -38,13 +36,14 @@ int main(){
 		printf("Your word has been added.\n Would you like to add another word? (Type "
         "'p' or 'a')\n");
 		scanf(" %c", &playOrAdd);
+		fclose(fp);
 	}
 	
 	while(userWants == 'p'){
-		generateWord(fp, &tempWordVar);
+		generateWord(fp, &tempWordVar, &d);
 		UpdateBoard(tempWordVar, board);
 		printf("Enter p to keep playing\n");
-		scanf(" %d", &userWants);
+		scanf(" %c", &userWants);
 	}	
 }
 
@@ -70,9 +69,9 @@ void UpdateBoard(char words[],char board[30][80]){
 	    length++;
 	    i++;
 	}
-	int temp = rand() % 20; //need to add a strlen() function to make it the proper size from the end of the board
+	int temp = rand() % (78 - length); //need to add a strlen() function to make it the proper size from the end of the board
 	MoveWords(board);
-	for(int i = 0; i < length; i++){
+	for(int i = 0; i < length - 2; i++){
 		board[0][temp+i] = words[i];
 	}
 	PrintBoard(board);
@@ -95,13 +94,24 @@ void MoveWords(char board[30][80]){
 	}
 }
 
-void generateWord(FILE *fileName, char* randomWords){
+void generateWord(FILE *fileName, char* randomWords, int *w){
+    srand(time(NULL));
     char thrownLine[50]; //Stores the previous lines so that they do not get put onto the board
     int randomLine = 0;
-    randomLine = (rand() % 1000) + 1; //Generates which line the word will be at in the file
+    int usedWords[1000];
+    randomLine = (rand() % 999) + 1; //Generates which line the word will be at in the file
+    fileName = fopen("wordList.txt", "r");
+    for(int j = 0; j < 1000; j++){
+        if(usedWords[j] == randomLine){
+            randomLine = (rand() % 999) + 1;
+        }
+    }
     //The loop puts the values of the preceding lines into the thrownLine so it does not mix with the actual value
     for(int i = 1; i < randomLine; i++){
         fgets(thrownLine, randomLine, fileName);
     }
+    usedWords[*w] = randomLine;
+    w++;
     fgets(randomWords, randomLine, fileName);
+    fclose(fileName);
 }
