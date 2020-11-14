@@ -7,6 +7,7 @@ void PrintBoard(char board[30][80]);
 void UpdateBoard(char words[],char board[30][80]);
 void MoveWords(char board[30][80]);
 void generateWord(FILE *fileName, char* randomWords, int *w);
+void deleteWord(char newInput[], char board[30][80]);
 
 int main(){
 	char playOrAdd;
@@ -14,6 +15,7 @@ int main(){
 	char board[30][80];
 	char userWants;
 	char tempWordVar[50];
+	char input[50];
 	int d = 0;
 	for(int w = 0; w < 30; w++){
 		for(int i = 0; i < 80; i++){
@@ -42,9 +44,11 @@ int main(){
 	while(userWants == 'p'){
 		generateWord(fp, &tempWordVar, &d);
 		UpdateBoard(tempWordVar, board);
+		scanf("%s", input);
+		deleteWord(input, board);
 		printf("Enter p to keep playing\n");
 		scanf(" %c", &userWants);
-	}	
+	}
 }
 
 void PrintBoard(char board[30][80]){
@@ -114,4 +118,35 @@ void generateWord(FILE *fileName, char* randomWords, int *w){
     w++;
     fgets(randomWords, randomLine, fileName);
     fclose(fileName);
+}
+
+void deleteWord(char newInput[], char board[30][80]){
+    char tempVar[50];
+    int w = 0;
+    int areEqual = 1;
+    char blank[80];
+    int fixRow = 30;
+    for(int i = 0; i < 30; i++){
+        for(int j = 0; j < 80; j++){
+            if(board[i][j] != ' '){
+                tempVar[w] = board[i][j];
+                w++;
+            }
+        }
+        w = 0;
+        for(int t = 0; t < strlen(tempVar); t++){
+            if(newInput[t] != tempVar[t]){
+                areEqual = 0;
+            }
+        }
+        if(areEqual == 1){
+            fixRow = i;
+            for(int y = 1; y < 79; y++){
+		        board[fixRow][y] = ' ';
+	        }
+	        break;
+        }
+    }
+	
+	PrintBoard(board);
 }
