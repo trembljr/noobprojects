@@ -16,7 +16,9 @@ int main(){
 	char userWants;
 	char tempWordVar[50];
 	char input[50];
+	struct timeval start, end;
 	int d = 0;
+	int timeBetween = 1;
 	for(int w = 0; w < 30; w++){
 		for(int i = 0; i < 80; i++){
 			board[w][i] = ' ';
@@ -42,12 +44,16 @@ int main(){
 	}
 	
 	while(userWants == 'p'){
-		generateWord(fp, &tempWordVar, &d);
-		UpdateBoard(tempWordVar, board);
+	    gettimeofday(&start, NULL);
+	    for(int a = 0; a < timeBetween; a++){
+	        generateWord(fp, &tempWordVar, &d);
+		    UpdateBoard(tempWordVar, board);
+	    }
+	    PrintBoard(board);
 		scanf("%s", input);
 		deleteWord(input, board);
-		printf("Enter p to keep playing\n");
-		scanf(" %c", &userWants);
+		gettimeofday(&end, NULL);
+        timeBetween = fabs((end.tv_sec - start.tv_sec));
 	}
 }
 
@@ -78,7 +84,6 @@ void UpdateBoard(char words[],char board[30][80]){
 	for(int i = 0; i < length - 2; i++){
 		board[0][temp+i] = words[i];
 	}
-	PrintBoard(board);
 }
 
 void MoveWords(char board[30][80]){
@@ -87,6 +92,7 @@ void MoveWords(char board[30][80]){
  			if(board[i][j] != ' '){
 				if(i == 29){
 					printf("Game Over"); //ends game if the word is on the bottom line
+					PrintBoard(board);
 					exit(0);
 				}
 				else{
@@ -103,11 +109,11 @@ void generateWord(FILE *fileName, char* randomWords, int *w){
     char thrownLine[50]; //Stores the previous lines so that they do not get put onto the board
     int randomLine = 0;
     int usedWords[1000];
-    randomLine = (rand() % 999) + 1; //Generates which line the word will be at in the file
+    randomLine = (rand() % 499) + 1; //Generates which line the word will be at in the file
     fileName = fopen("wordList.txt", "r");
     for(int j = 0; j < 1000; j++){
         if(usedWords[j] == randomLine){
-            randomLine = (rand() % 999) + 1;
+            randomLine = (rand() % 499) + 1;
         }
     }
     //The loop puts the values of the preceding lines into the thrownLine so it does not mix with the actual value
@@ -126,8 +132,8 @@ void deleteWord(char newInput[], char board[30][80]){
     int areEqual = 1;
     char blank[80];
     int fixRow = 30;
-    for(int i = 0; i < 30; i++){
-        for(int j = 0; j < 80; j++){
+    for(int i = 0; i < 29; i++){
+        for(int j = 0; j < 79; j++){
             if(board[i][j] != ' '){
                 tempVar[w] = board[i][j];
                 w++;
