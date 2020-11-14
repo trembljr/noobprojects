@@ -45,7 +45,7 @@ int main(){
 	
 	while(userWants == 'p'){
 	    gettimeofday(&start, NULL);
-	    for(int a = 0; a < timeBetween; a++){
+	    for(int i = 0; i < timeBetween; i++){
 	        generateWord(fp, &tempWordVar, &d);
 		    UpdateBoard(tempWordVar, board);
 	    }
@@ -105,15 +105,14 @@ void MoveWords(char board[30][80]){
 }
 
 void generateWord(FILE *fileName, char* randomWords, int *w){
-    srand(time(NULL));
     char thrownLine[50]; //Stores the previous lines so that they do not get put onto the board
     int randomLine = 0;
     int usedWords[1000];
-    randomLine = (rand() % 499) + 1; //Generates which line the word will be at in the file
+    randomLine = (rand() % 999) + 1; //Generates which line the word will be at in the file
     fileName = fopen("wordList.txt", "r");
     for(int j = 0; j < 1000; j++){
         if(usedWords[j] == randomLine){
-            randomLine = (rand() % 499) + 1;
+            randomLine = (rand() % 999) + 1;
         }
     }
     //The loop puts the values of the preceding lines into the thrownLine so it does not mix with the actual value
