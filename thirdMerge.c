@@ -4,8 +4,8 @@
 #include <string.h>
 
 void PrintBoard(char board[30][80]);
-void UpdateBoard(char words[],char board[30][80]);
-void MoveWords(char board[30][80]);
+void UpdateBoard(char words[],char board[30][80], struct timeval startTime, struct timeval endTime);
+void MoveWords(char board[30][80], struct timeval start, struct timeval end);
 void generateWord(FILE *fileName, char* randomWords, int *w);
 void CompareWords(char userEntry[], char board[][80]);
 
@@ -43,13 +43,12 @@ int main(){
 		scanf(" %c", &playOrAdd);
 		fclose(fp);
 	}
-	
+	gettimeofday(&gameStart, NULL);
 	while(userWants == 'p'){
-	    gettimeofday(&gameStart, NULL);
 	    gettimeofday(&start, NULL);
 	    for(int i = 0; i < timeBetween; i++){
 	        generateWord(fp, &tempWordVar, &d);
-		    UpdateBoard(tempWordVar, board);
+		    UpdateBoard(tempWordVar, board, gameStart, gameEnd);
 	    }
 	    PrintBoard(board);
 		scanf("%s", &userWord);
@@ -74,26 +73,29 @@ void PrintBoard(char board[30][80]){
 	}
 }
 
-void UpdateBoard(char words[],char board[30][80]){
+void UpdateBoard(char words[],char board[30][80], struct timeval startTime, struct timeval endTime){
 	int length = 0;
 	int i = 0;
 	while(words[i] != '\0'){
 	    length++;
 	    i++;
 	}
-	int temp = rand() % (78 - length); //need to add a strlen() function to make it the proper size from the end of the board
-	MoveWords(board);
+	int temp = rand() % (77 - length) +1; //need to add a strlen() function to make it the proper size from the end of the board
+	MoveWords(board, startTime, endTime);
 	for(int i = 0; i < length - 2; i++){
 		board[0][temp+i] = words[i];
 	}
 }
 
-void MoveWords(char board[30][80]){
+void MoveWords(char board[30][80], struct timeval start, struct timeval end){
 	for(int i = 29; i >= 0; i--){
 		for(int j = 0; j < 79; j++){
  			if(board[i][j] != ' '){
 				if(i == 29){
-					printf("Game Over"); //ends game if the word is on the bottom line
+					gettimeofday(&end, NULL);
+					printf("Game Over. "); //ends game if the word is on the bottom line
+					int userTime = fabs((end.tv_sec - start.tv_sec));
+					printf("Your time was %d seconds.\n", userTime);
 					PrintBoard(board);
 					exit(0);
 				}
