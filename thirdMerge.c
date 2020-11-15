@@ -7,7 +7,7 @@ void PrintBoard(char board[30][80]);
 void UpdateBoard(char words[],char board[30][80]);
 void MoveWords(char board[30][80]);
 void generateWord(FILE *fileName, char* randomWords, int *w);
-void deleteWord(char newInput[], char board[30][80]);
+void CompareWords(char userEntry[], char board[][80]);
 
 int main(){
 	char playOrAdd;
@@ -15,10 +15,11 @@ int main(){
 	char board[30][80];
 	char userWants;
 	char tempWordVar[50];
-	char input[50];
-	struct timeval start, end;
+	char userWord[30];
+	struct timeval start, end, gameStart, gameEnd;
 	int d = 0;
 	int timeBetween = 1;
+	int gameTime = 0;
 	for(int w = 0; w < 30; w++){
 		for(int i = 0; i < 80; i++){
 			board[w][i] = ' ';
@@ -44,14 +45,15 @@ int main(){
 	}
 	
 	while(userWants == 'p'){
+	    gettimeofday(&gameStart, NULL);
 	    gettimeofday(&start, NULL);
 	    for(int i = 0; i < timeBetween; i++){
 	        generateWord(fp, &tempWordVar, &d);
 		    UpdateBoard(tempWordVar, board);
 	    }
 	    PrintBoard(board);
-		scanf("%s", input);
-		deleteWord(input, board);
+		scanf("%s", &userWord);
+		CompareWords(userWord,board);
 		gettimeofday(&end, NULL);
         timeBetween = fabs((end.tv_sec - start.tv_sec));
 	}
@@ -125,33 +127,24 @@ void generateWord(FILE *fileName, char* randomWords, int *w){
     fclose(fileName);
 }
 
-void deleteWord(char newInput[], char board[30][80]){
-    char tempVar[50];
-    int w = 0;
-    int areEqual = 1;
-    char blank[80];
-    int fixRow = 30;
-    for(int i = 0; i < 29; i++){
-        for(int j = 0; j < 79; j++){
-            if(board[i][j] != ' '){
-                tempVar[w] = board[i][j];
-                w++;
-            }
-        }
-        w = 0;
-        for(int t = 0; t < strlen(tempVar); t++){
-            if(newInput[t] != tempVar[t]){
-                areEqual = 0;
-            }
-        }
-        if(areEqual == 1){
-            fixRow = i;
-            for(int y = 1; y < 79; y++){
-		        board[fixRow][y] = ' ';
-	        }
-	        break;
-        }
-    }
-	
-	PrintBoard(board);
+void CompareWords(char userEntry[], char board[30][80]){
+	char fullWord[20];
+	for(int i = 29; i >= 0; i--){
+		for(int j = 1; j < 79; j++){
+ 			if(board[i][j] == userEntry[0] && (board[i][j-1] == ' ' || board[i][j-1] == '|') ){
+				fullWord[strlen(userEntry)] = '\0';
+				for(int w = 0; userEntry[w] == board[i][w+j]; w++){
+					fullWord[w] = board[i][j+w];
+				}
+				int y = strlen(fullWord);
+				if(strcmp(userEntry,fullWord) == 0 && board[i][j+y] == ' '){
+					for(int w = 0; userEntry[w] == board[i][w+j]; w++){
+						board[i][j+w] = ' ';
+					}
+					return;
+				}
+			}
+
+		}
+	}
 }
