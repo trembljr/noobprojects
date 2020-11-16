@@ -4,10 +4,10 @@
 #include <string.h>
 
 void PrintBoard(char board[30][80]);
-void UpdateBoard(char words[],char board[30][80]);
-void MoveWords(char board[30][80]);
+void UpdateBoard(char words[],char board[30][80], struct timeval startTime, struct timeval endTime);
+void MoveWords(char board[30][80], struct timeval start, struct timeval end);
 void generateWord(FILE *fileName, char* randomWords, int *w);
-void deleteWord(char newInput[], char board[30][80]);
+void CompareWords(char userEntry[], char board[][80]);
 
 int main(){
 	char playOrAdd;
@@ -15,10 +15,11 @@ int main(){
 	char board[30][80];
 	char userWants;
 	char tempWordVar[50];
-	char input[50];
-	struct timeval start, end;
+	char userWord[30];
+	struct timeval start, end, gameStart, gameEnd;
 	int d = 0;
 	int timeBetween = 1;
+	int gameTime = 0;
 	for(int w = 0; w < 30; w++){
 		for(int i = 0; i < 80; i++){
 			board[w][i] = ' ';
@@ -42,16 +43,16 @@ int main(){
 		scanf(" %c", &playOrAdd);
 		fclose(fp);
 	}
-	
+	gettimeofday(&gameStart, NULL);
 	while(userWants == 'p'){
 	    gettimeofday(&start, NULL);
 	    for(int i = 0; i < timeBetween; i++){
 	        generateWord(fp, &tempWordVar, &d);
-		    UpdateBoard(tempWordVar, board);
+		    UpdateBoard(tempWordVar, board, gameStart, gameEnd);
 	    }
 	    PrintBoard(board);
-		scanf("%s", input);
-		deleteWord(input, board);
+		scanf("%s", &userWord);
+		CompareWords(userWord,board);
 		gettimeofday(&end, NULL);
         timeBetween = fabs((end.tv_sec - start.tv_sec));
 	}
@@ -72,26 +73,29 @@ void PrintBoard(char board[30][80]){
 	}
 }
 
-void UpdateBoard(char words[],char board[30][80]){
+void UpdateBoard(char words[],char board[30][80], struct timeval startTime, struct timeval endTime){
 	int length = 0;
 	int i = 0;
 	while(words[i] != '\0'){
 	    length++;
 	    i++;
 	}
-	int temp = rand() % (78 - length); //need to add a strlen() function to make it the proper size from the end of the board
-	MoveWords(board);
+	int temp = rand() % (77 - length) +1; //need to add a strlen() function to make it the proper size from the end of the board
+	MoveWords(board, startTime, endTime);
 	for(int i = 0; i < length - 2; i++){
 		board[0][temp+i] = words[i];
 	}
 }
 
-void MoveWords(char board[30][80]){
+void MoveWords(char board[30][80], struct timeval start, struct timeval end){
 	for(int i = 29; i >= 0; i--){
 		for(int j = 0; j < 79; j++){
  			if(board[i][j] != ' '){
 				if(i == 29){
-					printf("Game Over"); //ends game if the word is on the bottom line
+					gettimeofday(&end, NULL);
+					printf("Game Over. "); //ends game if the word is on the bottom line
+					int userTime = fabs((end.tv_sec - start.tv_sec));
+					printf("Your time was %d seconds.\n", userTime);
 					PrintBoard(board);
 					exit(0);
 				}
@@ -125,33 +129,24 @@ void generateWord(FILE *fileName, char* randomWords, int *w){
     fclose(fileName);
 }
 
-void deleteWord(char newInput[], char board[30][80]){
-    char tempVar[50];
-    int w = 0;
-    int areEqual = 1;
-    char blank[80];
-    int fixRow = 30;
-    for(int i = 0; i < 29; i++){
-        for(int j = 0; j < 79; j++){
-            if(board[i][j] != ' '){
-                tempVar[w] = board[i][j];
-                w++;
-            }
-        }
-        w = 0;
-        for(int t = 0; t < strlen(tempVar); t++){
-            if(newInput[t] != tempVar[t]){
-                areEqual = 0;
-            }
-        }
-        if(areEqual == 1){
-            fixRow = i;
-            for(int y = 1; y < 79; y++){
-		        board[fixRow][y] = ' ';
-	        }
-	        break;
-        }
-    }
-	
-	PrintBoard(board);
+void CompareWords(char userEntry[], char board[30][80]){
+	char fullWord[20];
+	for(int i = 29; i >= 0; i--){
+		for(int j = 1; j < 79; j++){
+ 			if(board[i][j] == userEntry[0] && (board[i][j-1] == ' ' || board[i][j-1] == '|') ){
+				fullWord[strlen(userEntry)] = '\0';
+				for(int w = 0; userEntry[w] == board[i][w+j]; w++){
+					fullWord[w] = board[i][j+w];
+				}
+				int y = strlen(fullWord);
+				if(strcmp(userEntry,fullWord) == 0 && board[i][j+y] == ' '){
+					for(int w = 0; userEntry[w] == board[i][w+j]; w++){
+						board[i][j+w] = ' ';
+					}
+					return;
+				}
+			}
+
+		}
+	}
 }
